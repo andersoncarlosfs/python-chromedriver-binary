@@ -148,10 +148,9 @@ def get_chrome_major_version():
 
                         version = ctypes.wstring_at(value.value, value_size.value - 1)
                         
-                        return get_parsed_version(version)
+                        return get_version(version)
                     
-                    except Exception as e:
-                        print(e)
+                    except Exception:
                         pass
             pass
 
