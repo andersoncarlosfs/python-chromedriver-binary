@@ -147,7 +147,8 @@ def get_chrome_major_version():
                         
                         return get_parsed_version(version)
                     
-                    except Exception:
+                    except Exception as:
+                        print(e)
                         pass
             pass
 
