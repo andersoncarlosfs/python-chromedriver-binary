@@ -125,10 +125,7 @@ def get_chrome_major_version():
 
                 for root in roots:
                     try:
-                        print(1)
-                        print(get_raw_version(browser_executable))
-                        print(2)
-                        print(get_raw_version(os.path.join(root, 'Google', 'Chrome', 'Application', browser_executable + '.exe')))
+                        print(os.path.join(root, 'Google', 'Chrome', 'Application', browser_executable + '.exe'))
                         #return get_major_version(os.path.join(root, 'Google', 'Chrome', 'Application', browser_executable + '.exe'))
                     
                     except Exception:
