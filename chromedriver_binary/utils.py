@@ -134,8 +134,8 @@ def get_chrome_major_version():
                         
                         ctypes.windll.version.GetFileVersionInfoA(document, None, size, buffer)
                         
-                        r = c_uint()
-                        l = c_uint()
+                        r = ctypes.c_uint()
+                        l = ctypes.c_uint()
                         
                         ctypes.windll.version.VerQueryValueA(buffer, '\\VarFileInfo\\Translation', ctypes.byref(r), ctypes.byref(l))
                         
