@@ -9,6 +9,7 @@ import ssl
 import subprocess
 import re
 import platform
+import ctypes
 
 try:
     from urllib.request import urlopen, URLError
@@ -125,8 +126,26 @@ def get_chrome_major_version():
 
                 for root in roots:
                     try:
-                        print(os.path.join(root, 'Google', 'Chrome', 'Application', browser_executable + '.exe'))
-                        #return get_major_version(os.path.join(root, 'Google', 'Chrome', 'Application', browser_executable + '.exe'))
+                        # https://stackoverflow.com/questions/580924/how-to-access-a-files-properties-on-windows
+                        document = os.path.join(root, 'Google', 'Chrome', 'Application', browser_executable + '.exe')
+                        
+                        size = ctypes. windll.version.GetFileVersionInfoSizeA(document, None)
+                        buffer = ctypes.create_string_buffer(size)
+                        
+                        ctypes.windll.version.GetFileVersionInfoA(filename, None, size, res)
+                        
+                        r = c_uint()
+                        l = c_uint()
+                        
+                        ctypes.windll.version.VerQueryValueA(buffer, '\\VarFileInfo\\Translation', ctypes.byref(r), ctypes.byref(l))
+                        
+                        codepages = ctypes.array.array('H', ctypes.string_at(r.value, l.value))
+
+                        windll.version.VerQueryValueA(buffer, ('\\StringFileInfo\\%04x%04x\\'+ tuple(codepages[:2].tolist())) % codepage, ctypes.byref(r), ctypes.byref(l))
+    
+                        version = string_at(r.value, l.value)
+                        
+                        return get_parsed_version(version)
                     
                     except Exception:
                         pass
