@@ -124,9 +124,8 @@ def get_chrome_major_version():
                 roots = list(filter(None, [os.getenv('LocalAppData'), os.getenv('ProgramFiles'), os.getenv('ProgramFiles(x86)'), os.getenv('ProgramW6432')]))
 
                 for root in roots:
-                    print(os.path.join(root, 'Google', 'Chrome', 'Application', browser_executable + '.exe'))
                     try:
-                        prit(os.path.join(root, 'Google', 'Chrome', 'Application', browser_executable + '.exe'))
+                        print(os.path.join(root, 'Google', 'Chrome', 'Application', browser_executable + '.exe'))
                         return get_major_version(os.path.join(root, 'Google', 'Chrome', 'Application', browser_executable + '.exe'))
                     
                     except Exception:
