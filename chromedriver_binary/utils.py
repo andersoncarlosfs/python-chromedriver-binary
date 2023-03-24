@@ -135,7 +135,7 @@ def get_chrome_major_version():
                 for root in roots:
                     try:
                         # https://stackoverflow.com/questions/580924/how-to-access-a-files-properties-on-windows
-                        document = ctypes.wstring_at(os.path.join(root, 'Google', 'Chrome', 'Application', browser_executable + '.exe'))
+                        document = ctypes.string_at(os.path.join(root, 'Google', 'Chrome', 'Application', browser_executable + '.exe'))
                         
                         buffer_size = get_info(document, None)
                         buffer = ctypes.create_string_buffer(buffer_size)
@@ -151,9 +151,9 @@ def get_chrome_major_version():
 
                         language = '{0:04x}{1:04x}'.format(*codepages[:2].tolist())
 
-                        get_value(buffer, ctypes.wstring_at('\\StringFileInfo\\' + language + '\\FileVersion'), ctypes.byref(value), ctypes.byref(value_size))
+                        get_value(buffer, ctypes.string_at('\\StringFileInfo\\' + language + '\\FileVersion'), ctypes.byref(value), ctypes.byref(value_size))
 
-                        version = ctypes.wstring_at(value.value, value_size.value - 1)
+                        version = ctypes.string_at(value.value, value_size.value - 1)
                         
                         return get_version(version)
                     
