@@ -142,9 +142,9 @@ def get_chrome_major_version():
                         
                         codepages = array.array('H', ctypes.string_at(r.value, l.value))
 
-                        windll.version.VerQueryValueA(buffer, ('\\StringFileInfo\\%04x%04x\\FileVersion') % tuple(codepages[:2].tolist()), ctypes.byref(r), ctypes.byref(l))
+                        ctypes.windll.version.VerQueryValueA(buffer, ('\\StringFileInfo\\%04x%04x\\FileVersion') % tuple(codepages[:2].tolist()), ctypes.byref(r), ctypes.byref(l))
     
-                        version = string_at(r.value, l.value)
+                        version = ctypes.string_at(r.value, l.value)
                         
                         return get_parsed_version(version)
                     
