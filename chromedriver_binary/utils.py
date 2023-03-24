@@ -139,7 +139,7 @@ def get_chrome_major_version():
                         
                         ctypes.windll.version.VerQueryValueA(buffer, '\\VarFileInfo\\Translation', ctypes.byref(r), ctypes.byref(l))
                         
-                        codepages = ctypes.array.array('H', ctypes.string_at(r.value, l.value))
+                        codepages = array.array('H', ctypes.string_at(r.value, l.value))
 
                         windll.version.VerQueryValueA(buffer, ('\\StringFileInfo\\%04x%04x\\FileVersion') % tuple(codepages[:2].tolist()), ctypes.byref(r), ctypes.byref(l))
     
