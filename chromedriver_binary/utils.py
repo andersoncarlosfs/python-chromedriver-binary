@@ -132,7 +132,7 @@ def get_chrome_major_version():
                         size = ctypes. windll.version.GetFileVersionInfoSizeA(document, None)
                         buffer = ctypes.create_string_buffer(size)
                         
-                        ctypes.windll.version.GetFileVersionInfoA(filename, None, size, res)
+                        ctypes.windll.version.GetFileVersionInfoA(document, None, size, res)
                         
                         r = c_uint()
                         l = c_uint()
