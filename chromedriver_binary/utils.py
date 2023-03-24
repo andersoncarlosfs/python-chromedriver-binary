@@ -117,7 +117,7 @@ def get_chrome_major_version():
 
     for browser_executable in browser_executables:
         try:
-            version = subprocess.check_output([browser_executable, '--version']
+            version = subprocess.check_output([browser_executable, '--version'])
             
             return get_version(version.decode('utf-8'))
         
