@@ -128,25 +128,25 @@ def get_chrome_major_version():
                 for root in roots:
                     try:
                         # https://stackoverflow.com/questions/580924/how-to-access-a-files-properties-on-windows
-                        document = os.path.join(root, 'Google', 'Chrome', 'Application', browser_executable + '.exe')
+                        document = ctypes.wstring_at(os.path.join(root, 'Google', 'Chrome', 'Application', browser_executable + '.exe'))
                         
-                        size = ctypes. windll.version.GetFileVersionInfoSizeA(document, None)
-                        print(size)
-                        buffer = ctypes.create_string_buffer(size)
-                        
-                        ctypes.windll.version.GetFileVersionInfoA(document, None, size, buffer)
-                        
-                        r = ctypes.c_uint()
-                        l = ctypes.c_uint()
-                        
-                        ctypes.windll.version.VerQueryValueA(buffer, '\\VarFileInfo\\Translation', ctypes.byref(r), ctypes.byref(l))
-                        
-                        print(l)
-                        codepages = array.array('H', ctypes.string_at(r.value, l.value))
+                        buffer_size = ctypes.windll.version.GetFileVersionInfoSizeW(document, None)
+                        buffer = ctypes.create_string_buffer(buffer_size)
 
-                        ctypes.windll.version.VerQueryValueA(buffer, ('\\StringFileInfo\\%04x%04x\\FileVersion') % tuple(codepages[:2].tolist()), ctypes.byref(r), ctypes.byref(l))
-    
-                        version = ctypes.string_at(r.value, l.value)
+                        ctypes.windll.version.GetFileVersionInfoW(document, None, buffer_size, buffer)
+
+                        value_size = ctypes.c_uint(0)
+                        value = ctypes.c_void_p(0)
+
+                        ctypes.windll.version.VerQueryValueW(buffer, ctypes.wstring_at(r"\VarFileInfo\Translation"), ctypes.byref(value), ctypes.byref(value_size))
+
+                        codepages = array.array('H', ctypes.string_at(value.value, value_size.value))
+
+                        language = '{0:04x}{1:04x}'.format(*codepages[:2].tolist())
+
+                        ctypes.windll.version.VerQueryValueW(buffer, ctypes.wstring_at('\\StringFileInfo\\' + language + '\\FileVersion'), ctypes.byref(value), ctypes.byref(value_size))
+
+                        version = ctypes.wstring_at(value.value, value_size.value - 1)
                         
                         return get_parsed_version(version)
                     
