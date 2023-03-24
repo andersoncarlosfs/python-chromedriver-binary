@@ -131,6 +131,7 @@ def get_chrome_major_version():
                         document = os.path.join(root, 'Google', 'Chrome', 'Application', browser_executable + '.exe')
                         
                         size = ctypes. windll.version.GetFileVersionInfoSizeA(document, None)
+                        print(size)
                         buffer = ctypes.create_string_buffer(size)
                         
                         ctypes.windll.version.GetFileVersionInfoA(document, None, size, buffer)
@@ -140,6 +141,7 @@ def get_chrome_major_version():
                         
                         ctypes.windll.version.VerQueryValueA(buffer, '\\VarFileInfo\\Translation', ctypes.byref(r), ctypes.byref(l))
                         
+                        print(l)
                         codepages = array.array('H', ctypes.string_at(r.value, l.value))
 
                         ctypes.windll.version.VerQueryValueA(buffer, ('\\StringFileInfo\\%04x%04x\\FileVersion') % tuple(codepages[:2].tolist()), ctypes.byref(r), ctypes.byref(l))
