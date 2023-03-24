@@ -9,6 +9,7 @@ import ssl
 import subprocess
 import re
 import platform
+import array
 import ctypes
 
 try:
